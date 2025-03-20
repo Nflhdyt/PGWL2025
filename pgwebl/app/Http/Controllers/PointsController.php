@@ -39,6 +39,23 @@ class PointsController extends Controller
      */
     public function store(Request $request)
     {
+
+        //Validate request
+        $request->validate(
+            [
+                'name' => 'required|unique:point,name',
+                'description' => 'required',
+                'geom_point' => 'required',
+            ],
+            [
+                'name.required' => 'Name is required',
+                'name.unique' => 'Name already exists',
+                'description.required' => 'Description is required',
+                'geom_point.required' => 'Geometry point is required',
+
+            ]
+        );
+
         $data = [
             'geom' => $request->geom_point,
             'name' => $request->name,
@@ -49,7 +66,9 @@ class PointsController extends Controller
 
 
         // Create data
-        $this->point->create($data);
+        if (!$this->point->create($data)) {
+            return redirect()->route('map')->with('error', 'Data gagal disimpan.');
+        }
 
         // Redirect setelah menyimpan data
         return redirect()->route('map')->with('success', 'Data berhasil disimpan.');
