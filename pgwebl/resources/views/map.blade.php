@@ -207,5 +207,75 @@
 
             drawnItems.addLayer(layer);
         });
+
+        //GeoJSON Points
+        var point = L.geoJson(null, {
+				onEachFeature: function (feature, layer) {
+					var popupContent = "Nama: " + feature.properties.name + "<br>" +
+						"Deskripsi: " + feature.properties.description + "<br>" +
+                        'Dibuat: ' + feature.properties.created_at + "<br>" +
+                        'Diubah: ' + feature.properties.updated_at;
+					layer.on({
+						click: function (e) {
+							point.bindPopup(popupContent);
+						},
+						mouseover: function (e) {
+							point.bindTooltip(feature.properties.kab_kota);
+						},
+					});
+				},
+			});
+			$.getJSON("{{route ('api.points')}}", function (data) {
+				point.addData(data);
+				map.addLayer(point);
+			});
+
+
+            //GeoJSON Polylines
+        var polylines = L.geoJson(null, {
+				onEachFeature: function (feature, layer) {
+					var popupContent = "Nama: " + feature.properties.name + "<br>" +
+						"Deskripsi: " + feature.properties.description + "<br>" +
+                        'Dibuat: ' + feature.properties.created_at + "<br>" +
+                        "Panjang: " + feature.properties.length + " km" + "<br>" +
+                        'Diubah: ' + feature.properties.updated_at;
+					layer.on({
+						click: function (e) {
+							polylines.bindPopup(popupContent);
+						},
+						mouseover: function (e) {
+							polylines.bindTooltip(feature.properties.kab_kota);
+						},
+					});
+				},
+			});
+			$.getJSON("{{route ('api.polylines')}}", function (data) {
+				polylines.addData(data);
+				map.addLayer(polylines);
+			});
+
+
+           /* GeoJSON Polygon */
+			var polygon = L.geoJson(null, {
+				onEachFeature: function (feature, layer) {
+					var popupContent =
+                    "Nama: " + feature.properties.name + "<br>" +
+                    "Deskripsi: " + feature.properties.description + "<br>" +
+                    "Luas (km2): " + feature.properties.luas_km2 + "<br>" +
+                    "Luas (ha): " + feature.properties.luas_hektar;
+					layer.on({
+						click: function (e) {
+							polygon.bindPopup(popupContent);
+						},
+						mouseover: function (e) {
+							polygon.bindTooltip(feature.properties.kab_kota);
+						},
+					});
+				},
+			});
+			$.getJSON("{{route ('api.polygons')}}", function (data) {
+                polygon.addData(data);
+				map.addLayer(polygon);
+			});
     </script>
 @endsection
