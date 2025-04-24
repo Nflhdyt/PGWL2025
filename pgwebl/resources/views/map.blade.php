@@ -24,7 +24,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Create Point</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{ route('points.store') }}">
+                <form method="POST" action="{{ route('points.store') }}" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
 
@@ -44,6 +44,13 @@
                             <textarea class="form-control" id="geom_point" name="geom_point" rows="3"></textarea>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Photo</label>
+                            <input type="file" class="form-control" id="image_point" name="image"
+                            onchange="document.getElementById('preview-image-point').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="" alt="" id="preview-image-point" class="img-thumbnail" width="400">
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -54,7 +61,7 @@
         </div>
     </div>
 
-    <!-- Modal Create Polyine-->
+    <!-- Modal Create Polyline-->
     <div class="modal fade" id="CreatePolylineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -62,7 +69,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Create Polyline</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{ route('polylines.store') }}">
+                <form method="POST" action="{{ route('polylines.store') }}" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
 
@@ -80,6 +87,13 @@
                         <div class="mb-3">
                             <label for="geom_polyline" class="form-label">Geometry</label>
                             <textarea class="form-control" id="geom_polyline" name="geom_polyline" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Photo</label>
+                            <input type="file" class="form-control" id="image_[polyline]" name="image"
+                            onchange="document.getElementById('preview-image-[polyline]').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="" alt="" id="preview-image-polyline" class="img-thumbnail" width="400">
                         </div>
 
                     </div>
@@ -101,7 +115,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Create Polygon</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{ route('polygons.store') }}">
+                <form method="POST" action="{{ route('polygons.store') }}" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
 
@@ -119,6 +133,13 @@
                         <div class="mb-3">
                             <label for="geom_polygon" class="form-label">Geometry</label>
                             <textarea class="form-control" id="geom_polygon" name="geom_polygon" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Photo</label>
+                            <input type="file" class="form-control" id="image_[polygon]" name="image"
+                            onchange="document.getElementById('preview-image-[polygon]').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="" alt="" id="preview-image-polygon" class="img-thumbnail" width="400">
                         </div>
 
                     </div>
@@ -214,7 +235,8 @@
 					var popupContent = "Nama: " + feature.properties.name + "<br>" +
 						"Deskripsi: " + feature.properties.description + "<br>" +
                         'Dibuat: ' + feature.properties.created_at + "<br>" +
-                        'Diubah: ' + feature.properties.updated_at;
+                        'Diubah: ' + feature.properties.updated_at + "<br>" +
+                        "<img src='{{asset('storage/images/')}}/" + feature.properties.image + " ' width='200' alt=''>";
 					layer.on({
 						click: function (e) {
 							point.bindPopup(popupContent);
@@ -238,7 +260,8 @@
 						"Deskripsi: " + feature.properties.description + "<br>" +
                         'Dibuat: ' + feature.properties.created_at + "<br>" +
                         "Panjang: " + feature.properties.length + " km" + "<br>" +
-                        'Diubah: ' + feature.properties.updated_at;
+                        'Diubah: ' + feature.properties.updated_at +
+                        "<img src='{{ asset('storage/images/') }}/" + feature.properties.image + " ' width='200' alt=''>";
 					layer.on({
 						click: function (e) {
 							polylines.bindPopup(popupContent);
@@ -262,7 +285,8 @@
                     "Nama: " + feature.properties.name + "<br>" +
                     "Deskripsi: " + feature.properties.description + "<br>" +
                     "Luas (km2): " + feature.properties.luas_km2 + "<br>" +
-                    "Luas (ha): " + feature.properties.luas_hektar;
+                    "Luas (ha): " + feature.properties.luas_hektar +
+                    "<img src='{{asset('storage/images/')}}/" + feature.properties.image + " ' width='200' alt=''>";
 					layer.on({
 						click: function (e) {
 							polygon.bindPopup(popupContent);
