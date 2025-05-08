@@ -91,8 +91,31 @@ class PolygonsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(string $id)
     {
-        //
+        $imagefile = $this->polygon->find($id)->image;
+        if ($imagefile != null) {
+            if (file_exists('storage/images/' . $imagefile)) {
+                unlink('storage/images/' . $imagefile);
+            }
+        }
+
+        // Delete data
+    {
+        if(!$this ->polygon->destroy($id)){
+            return redirect()->route('map')->with('error', 'Data gagal dihapus.');
+        }
+
+//Delete data image file
+if ($imagefile != null) {
+            if (file_exists('storage/images/' . $imagefile)) {
+                unlink('storage/images/' . $imagefile);
+            }
+        }
+
+        return redirect()->route('map')->with('success', 'Data berhasil dihapus.');
+    }
+
     }
 }
