@@ -10,6 +10,8 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/points', [ApiController::class, 'points'])->name('api.points');
 
+Route::get('/points/{id}', [ApiController::class, 'point'])->name('api.point');
+
 Route::get('/polylines', [ApiController::class, 'polylines'])->name('api.polylines');
 
 Route::get('/polygons', [APIController::class, 'polygons'])->name('api.polygons');
