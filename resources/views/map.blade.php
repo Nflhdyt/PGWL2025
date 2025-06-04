@@ -162,7 +162,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script>
-        var map = L.map('map').setView([-7.787606408683005, 110.37484509107097], 13);
+        var map = L.map('map').setView([-7.78104777210165, 110.37286232490779], 13);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -214,7 +214,7 @@
                 $('#geom_point').val(objectGeometry);
                 $('#CreatePointModal').modal('show');
             } else {
-                console.log('__undefined__');
+                console.log('_undefined_');
             }
 
             drawnItems.addLayer(layer);
@@ -239,11 +239,13 @@
                     "Deskripsi: " + feature.properties.description + "<br>" +
                     "<img src='{{ asset('storage/images') }}/" + feature.properties.image +
                     "' width='200' alt=''>" + "<br>" +
+                    "<small>Dibuat oleh <strong>" + feature.properties.user_created + "</strong> <br>" +
+
                     "<div class='d-flex justify-content-between mt-4'>" +
                     "<a href='" + routeedit + "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i> Edit</a>" +
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
-                    "<button type='submit' class='btn btn-danger btn-sm' onclick='return confirm(`Hapus Point?`)'><i class='fa-regular fa-trash-can'></i> Delete</button>" +
+                    "<button type='submit' class='btn btn-danger btn-sm' onclick='return confirm(Hapus Point?)'><i class='fa-regular fa-trash-can'></i> Delete</button>" +
                     "</form>" +
                     "</div>";
                 layer.on({
@@ -276,11 +278,12 @@
                     "Luas (km): " + Number(feature.properties.length_km).toFixed(2) + "<br>" +
                     "<img src='{{ asset(path: 'storage/images') }}/" + feature.properties.image +
                     "' width='200' alt=''>" + "<br>" +
+                    "<small>Dibuat oleh <strong>" + feature.properties.user_created + "</strong> <br>" +
                     "<div class='d-flex justify-content-between mt-4'>" +
                     "<a href='" + routeedit + "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i> Edit</a>" +
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
-                    "<button type='submit' class='btn btn-danger btn-sm' onclick='return confirm(`Hapus Polyline?`)'><i class='fa-regular fa-trash-can'></i> Delete</button>" +
+                    "<button type='submit' class='btn btn-danger btn-sm' onclick='return confirm(Hapus Polyline?)'><i class='fa-regular fa-trash-can'></i> Delete</button>" +
                     "</form>" +
                     "</div>";
                 layer.on({
@@ -314,11 +317,12 @@
                     "Luas (ha): " + Number(feature.properties.luas_hektar).toFixed(2) + "<br>" +
                     "<img src='{{ asset(path: 'storage/images') }}/" + feature.properties.image +
                     "' width='200' alt=''>" + "<br>" +
+                    "<small>Dibuat oleh <strong>" + feature.properties.user_created + "</strong> <br>" +
                     "<div class='d-flex justify-content-between mt-4'>" +
                     "<a href='" + routeedit + "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i> Edit</a>" +
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
-                    "<button type='submit' class='btn btn-danger btn-sm' onclick='return confirm(`Hapus Polygon?`)'><i class='fa-regular fa-trash-can'></i> Delete</button>" +
+                    "<button type='submit' class='btn btn-danger btn-sm' onclick='return confirm(Hapus Polygon?)'><i class='fa-regular fa-trash-can'></i> Delete</button>" +
                     "</form>" +
                     "</div>";
                 layer.on({

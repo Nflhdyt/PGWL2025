@@ -7,11 +7,13 @@ use App\Models\PolygonsModel;
 
 class PolygonsController extends Controller
 {
+    protected $polygons;
+
     public function __construct()
     {
         $this->polygons = new PolygonsModel();
     }
-    /**
+    /*
      * Display a listing of the resource.
      */
     public function index()
@@ -147,6 +149,7 @@ class PolygonsController extends Controller
             'geom' => $request->geom_polygon,
             'description' => $request->description,
             'image' => $name_image,
+            'user_id' => auth()->user()->id,
         ];
 
         // Update data
@@ -174,6 +177,7 @@ class PolygonsController extends Controller
                 unlink('./storage/images/' . $imagefile);
             }
         }
+
 
         return redirect()->route('map')->with('success', 'Polygons has been deleted!');
     }

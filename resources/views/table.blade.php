@@ -21,11 +21,11 @@
 
 @section('content')
     <div class="container py-5"> {{-- Added padding top and bottom to the main container --}}
-        <h1 class="text-center mb-5">Data Features Overview</h1> {{-- Overall page title --}}
+        <h1 class="text-center mb-5">DATA ATRIBUT</h1> {{-- Overall page title --}}
 
         {{-- Table Point --}}
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-dark text-white">
                 <h2 class="h5 mb-0">Table Point</h2>
             </div>
             <div class="card-body">
@@ -70,7 +70,7 @@
 
         {{-- Table Polyline --}}
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-success text-white">
+            <div class="card-header bg-dark text-white">
                 <h2 class="h5 mb-0">Table Polyline</h2>
             </div>
             <div class="card-body">
@@ -115,7 +115,7 @@
 
         {{-- Table Polygon --}}
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-info text-white">
+            <div class="card-header bg-dark text-white">
                 <h2 class="h5 mb-0">Table Polygon</h2>
             </div>
             <div class="card-body">

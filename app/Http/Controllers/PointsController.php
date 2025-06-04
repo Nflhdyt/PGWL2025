@@ -9,7 +9,7 @@ class PointsController extends Controller
 {
     public function __construct()
     {
-        $this->point = new PointsModel();
+        $this->points = new PointsModel();
     }
     /**
      * Display a listing of the resource.
@@ -39,7 +39,7 @@ class PointsController extends Controller
 
         // validate data
         $request->validate([
-            'name' => 'required|unique:point,name',
+            'name' => 'required|unique:points,name',
             'description' => 'required',
             'geom_point' => 'required',
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:5120'
@@ -69,11 +69,12 @@ class PointsController extends Controller
             'geom' => $request->geom_point,
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $name_image
+            'image' => $name_image,
+            'user_id' => auth()->user()->id
         ];
 
         // create data
-        if (!$this->point->create($data)) {
+        if (!$this->points->create($data)) {
             return redirect()->route('map')->with('error', 'Point failed to add!');
         }
 
@@ -110,7 +111,7 @@ class PointsController extends Controller
         // validate data
         $request->validate(
             [
-                'name' => 'required|unique:point,name,' . $id,
+                'name' => 'required|unique:points,name,' . $id,
                 'description' => 'required',
                 'geom_point' => 'required',
                 'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2408',
@@ -130,7 +131,7 @@ class PointsController extends Controller
 
 
         // Get old image
-        $old_image = $this->point->find($id)->image;
+        $old_image = $this->points->find($id)->image;
 
         // Get image File
         if ($request->hasFile('image')) {
@@ -156,7 +157,7 @@ class PointsController extends Controller
         ];
 
         // Update data
-        if (!$this->point->find($id)->update($data)) {
+        if (!$this->points->find($id)->update($data)) {
             return redirect()->route('map')->with('error', 'Point failed to update');
         }
 
@@ -169,9 +170,9 @@ class PointsController extends Controller
      */
     public function destroy(string $id)
     {
-        $imagefile = $this->point->find($id)->image;
+        $imagefile = $this->points->find($id)->image;
 
-        if (!$this->point->destroy($id)) {
+        if (!$this->points->destroy($id)) {
             return redirect()->route('map')->with('error', 'Point failed to delete!');
         }
         // delete image

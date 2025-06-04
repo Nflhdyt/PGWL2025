@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class PointsModel extends Model
 {
-    protected $table = 'point';
+    protected $table = 'points';
 
     protected $guarded = ['id'];
 
     public function geojson_points()
     {
-        $point = $this
-            ->select(DB::raw('id, st_asgeojson(geom) as geom, name, description, image, created_at, updated_at'))
+        $points = $this
+            ->select(DB::raw('points.id, st_asgeojson(geom) as geom, points.name, points.description, points.image, points.created_at, points.updated_at, points.user_id, users.name as user_created'))
+            ->leftjoin('users', 'points.user_id', '=', 'users.id')
             ->get();
 
         $geojson = [
@@ -22,7 +23,7 @@ class PointsModel extends Model
             'features' => [],
         ];
 
-        foreach ($point as $p) {
+        foreach ($points as $p) {
             $feature = [
                 'type' => 'Feature',
                 'geometry' => json_decode($p->geom),
@@ -32,7 +33,9 @@ class PointsModel extends Model
                     'description' => $p->description,
                     'created_at' => $p->created_at,
                     'updated_at' => $p->updated_at,
-                    'image' => $p->image
+                    'image' => $p->image,
+                    'user_id' => $p->user_id,
+                    'user_created' => $p->user_created
                 ],
             ];
 
@@ -45,7 +48,7 @@ class PointsModel extends Model
 
     public function geojson_point($id)
     {
-        $point = $this
+        $points = $this
             ->select(DB::raw('id, st_asgeojson(geom) as geom, name, description, image, created_at, updated_at'))
             ->where('id', $id)
             ->get();
@@ -55,7 +58,7 @@ class PointsModel extends Model
             'features' => [],
         ];
 
-        foreach ($point as $p) {
+        foreach ($points as $p) {
             $feature = [
                 'type' => 'Feature',
                 'geometry' => json_decode($p->geom),

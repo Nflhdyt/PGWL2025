@@ -3,24 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\PointsController;
-use App\Http\Controllers\PolygonsController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PolylinesController;
+use App\Http\Controllers\PolygonsController;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/', [PointsController::class, 'index']) ->name('map');
+Route::get('/',[PublicController::class, 'index'])
+->name('home');
 
-Route::get('/table', [TableController::class, 'index']) ->name('table');
+Route::get('/map',[PointsController::class, 'index' ])
+->middleware(['auth', 'verified'])
+->name('map');
 
-Route::resource('points', PointsController::class);
-
-Route::resource('polylines', PolylinesController::class);
-
-Route::resource('polygons', PolygonsController::class);
-
-
-
-
-
+Route::get('/table',[TableController::class, 'index'])->name('table');
 
 
 Route::get('/dashboard', function () {
@@ -32,5 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('points', PointsController::class);
+Route::resource('polylines', PolylinesController::class);
+Route::resource('polygons', PolygonsController::class);
 
 require __DIR__.'/auth.php';
