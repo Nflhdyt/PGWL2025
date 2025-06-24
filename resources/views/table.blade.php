@@ -1,36 +1,41 @@
 @extends('layouts/template')
 
 @section('styles')
-    {{-- Add any specific styles here if needed --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.bootstrap5.min.css">
     <style>
-        .table th {
-            font-weight: 600; /* Make table headers slightly bolder */
+    .body {
+            background-color: #f8f9fa;
         }
-        .card-header h2 {
-            margin-bottom: 0; /* Remove default margin from h2 inside card-header */
-            font-size: 1.25rem; /* Adjust title size if needed */
-        }
-        .img-thumbnail-table {
-            max-width: 100px;
-            max-height: 60px;
-            object-fit: cover; /* Ensures image covers the area without distortion */
-            border-radius: 0.25rem; /* Optional: rounded corners for images */
-        }
-    </style>
+    .table th {
+        font-weight: 600;
+    }
+    .card-header h2 {
+        margin-bottom: 0;
+        font-size: 1.25rem;
+    }
+    .img-thumbnail-table {
+        max-width: 100px;
+        max-height: 60px;
+        object-fit: cover;
+        border-radius: 0.25rem;
+    }
+</style>
 @endsection
 
 @section('content')
-    <div class="container py-5"> {{-- Added padding top and bottom to the main container --}}
-        <h1 class="text-center mb-5">DATA ATRIBUT</h1> {{-- Overall page title --}}
+    <div class="container py-5">
+        <h1 class="text-center mb-5 display-4 fw-bold text-dark">DATA TABLE</h1>
 
         {{-- Table Point --}}
-        <div class="card shadow-sm mb-4">
+        <div class="card shadow-lg mb-5">
             <div class="card-header bg-dark text-white">
-                <h2 class="h5 mb-0">Table Point</h2>
+                <h2 class="h5 mb-0">Points Data</h2>
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover align-middle">
+                    <table class="table table-striped table-hover align-middle" id="pointstable">
                         <thead class="table-light">
                             <tr>
                                 <th scope="col">No</th>
@@ -46,7 +51,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $p->name }}</td>
-                                    <td>{{ Str::limit($p->description, 100) }}</td> {{-- Limit description length --}}
+                                    <td>{{ Str::limit($p->description, 100) }}</td>
                                     <td>
                                         @if ($p->image)
                                             <img src="{{ asset('storage/images/'.$p->image) }}" alt="{{ $p->name }}" class="img-thumbnail-table" title="{{ $p->image }}">
@@ -59,7 +64,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">No point data available.</td>
+                                    <td colspan="6" class="text-center text-muted py-4">No point data available. Please add some points.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -68,14 +73,16 @@
             </div>
         </div>
 
+
         {{-- Table Polyline --}}
-        <div class="card shadow-sm mb-4">
+        <div class="card shadow-lg mb-5">
             <div class="card-header bg-dark text-white">
-                <h2 class="h5 mb-0">Table Polyline</h2>
+                <h2 class="h5 mb-0">Polylines Data</h2>
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover align-middle">
+                    <table class="table table-striped table-hover align-middle" id="polylinestable">
                         <thead class="table-light">
                             <tr>
                                 <th scope="col">No</th>
@@ -104,7 +111,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">No polyline data available.</td>
+                                    <td colspan="6" class="text-center text-muted py-4">No polyline data available. Please add some polylines.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -113,14 +120,16 @@
             </div>
         </div>
 
+
         {{-- Table Polygon --}}
-        <div class="card shadow-sm mb-4">
+        <div class="card shadow-lg mb-4">
             <div class="card-header bg-dark text-white">
-                <h2 class="h5 mb-0">Table Polygon</h2>
+                <h2 class="h5 mb-0">Polygons Data</h2>
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover align-middle">
+                    <table class="table table-striped table-hover align-middle" id="polygonstable">
                         <thead class="table-light">
                             <tr>
                                 <th scope="col">No</th>
@@ -144,12 +153,12 @@
                                             <span class="text-muted">No Image</span>
                                         @endif
                                     </td>
-                                    <td>{{ $p->created_at->format('d M Y, H:i') }}</td>
-                                    <td>{{ $p->updated_at->format('d M Y, H:i') }}</td>
+                                    {{ $p->created_at ? $p->created_at->format('d M Y, H:i') : '-' }}
+                                    {{ $p->updated_at ? $p->updated_at->format('d M Y, H:i') : '-' }}
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">No polygon data available.</td>
+                                    <td colspan="6" class="text-center text-muted py-4">No polygon data available. Please add some polygons.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -159,4 +168,19 @@
         </div>
 
     </div>
+@endsection
+
+@section('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/2.3.1/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#pointstable').DataTable();
+        $('#polylinestable').DataTable();
+        $('#polygonstable').DataTable();
+    });
+</script>
+
 @endsection
